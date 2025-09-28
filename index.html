@@ -5,30 +5,75 @@
 <title>Vasava Translations</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  body{font-family:system-ui,Arial;min-height:100vh;margin:0;background:#f0f0f0;display:flex;align-items:flex-start;justify-content:center;padding:36px}
-  .box{background:#fff;padding:28px;border-radius:10px;max-width:800px;width:100%;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-  h1{margin:0 0 12px;text-align:center}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
-  .item{background:#fafafa;padding:8px;border-radius:6px;text-align:center;text-decoration:none;color:#111;display:block;border:1px solid #eee}
-  .item:hover{background:#f0f0f0}
+  :root{
+    --bg:#f0f0f0; --card:#fff; --text:#111; --muted:#666; --item:#fafafa; --item-hover:#f0f0f0;
+  }
+  [data-theme="dark"]{
+    --bg:#0b0b0b; --card:#0f0f0f; --text:#eee; --muted:#9a9a9a; --item:#111; --item-hover:#222;
+  }
+
+  html,body{height:100%;margin:0}
+  body{
+    font-family:system-ui,Arial;min-height:100vh;margin:0;background:var(--bg);
+    display:flex;align-items:flex-start;justify-content:center;padding:36px;color:var(--text)
+  }
+  .box{background:var(--card);padding:28px;border-radius:10px;max-width:800px;width:100%;
+       box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+  h1{margin:0 0 6px;text-align:left;font-size:1.25rem}
+  .muted{color:var(--muted);font-size:0.9rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px}
+  .item{background:var(--item);padding:8px;border-radius:6px;text-align:center;text-decoration:none;
+        color:var(--text);display:block;border:1px solid rgba(0,0,0,0.04)}
+  .item:hover{background:var(--item-hover)}
+  .toggle{
+    background:transparent;border:1px solid rgba(0,0,0,0.08);padding:8px 10px;border-radius:8px;
+    cursor:pointer;color:var(--text);
+  }
 </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Vasava Translations</h1>
+  <div class="box" id="page">
+    <header>
+      <div>
+        <h1>Vasava Translations</h1>
+        <div class="muted">Chapters 490–710</div>
+      </div>
+      <button id="themeToggle" class="toggle" aria-label="Toggle theme">Toggle</button>
+    </header>
+
     <div class="grid" id="list"></div>
   </div>
 
 <script>
-const start = 490, end = 586;
-const list = document.getElementById('list');
-for(let i=start;i<=end;i++){
-  const a = document.createElement('a');
-  a.className='item';
-  a.href = `chapters/reader.html?n=${i}`;
-  a.textContent = `Chapter ${i}`;
-  list.appendChild(a);
-}
+  // Theme init
+  const root = document.documentElement;
+  const stored = localStorage.getItem('vasava-theme');
+  if(stored) root.setAttribute('data-theme', stored);
+  function setTheme(t){
+    root.setAttribute('data-theme', t);
+    localStorage.setItem('vasava-theme', t);
+  }
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', ()=>{
+    const cur = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  // Set initial button label
+  function updateBtn(){ btn.textContent = (root.getAttribute('data-theme') === 'dark') ? 'Light' : 'Dark'; }
+  new MutationObserver(updateBtn).observe(root, {attributes:true, attributeFilter:['data-theme']});
+  updateBtn();
+
+  // Chapters list
+  const start = 490, end = 710;
+  const list = document.getElementById('list');
+  for(let i=start;i<=end;i++){
+    const a = document.createElement('a');
+    a.className='item';
+    a.href = `chapters/reader.html?n=${i}`;
+    a.textContent = `Chapter ${i}`;
+    list.appendChild(a);
+  }
 </script>
 </body>
 </html>
