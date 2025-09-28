@@ -5,29 +5,51 @@
 <title>Chapter reader</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  :root{--bg:#000;--text:#eee;--muted:#aaa}
+  :root{
+    --bg:#000; --text:#eee; --muted:#aaa; --card-bg:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  }
+  [data-theme="light"]{
+    --bg:#fff; --text:#111; --muted:#666; --card-bg:linear-gradient(180deg,#fff,#fbfbfb);
+  }
+
   html,body{height:100%;margin:0}
-  body{background:var(--bg);color:var(--text);font-family:system-ui,Arial;padding:28px;
-       display:flex;justify-content:center}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,Arial;
+    padding:28px;
+    display:flex;
+    justify-content:center;
+  }
   .wrap{max-width:760px;width:100%}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-        padding:20px;border-radius:10px}
+  .card{background:var(--card-bg);padding:20px;border-radius:10px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
   h1{margin:0 0 8px;font-size:1.2rem}
   .meta{color:var(--muted);font-size:0.9rem;margin-bottom:14px}
-  #content{line-height:1.7;color:var(--text);white-space:normal}
+  #content{line-height:1.7;color:var(--text);white-space:normal;font-size:18px}
   nav{display:flex;justify-content:space-between;margin-top:20px}
-  a{color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.06);
-    padding:8px 12px;border-radius:8px}
+  a{color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px}
   a[disabled]{opacity:.35;pointer-events:none}
+  .toggle{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--text)}
+  .controls-row{display:flex;gap:10px;align-items:center}
   p{margin:0 0 1em}
+  /* comments area spacing */
+  #comments { margin-top:28px; }
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <header>
-        <h1 id="title">Loading…</h1>
-        <div class="meta" id="meta">Vasava TLS</div>
+        <div>
+          <h1 id="title">Loading…</h1>
+          <div class="meta" id="meta">Vasava TLS</div>
+        </div>
+
+        <div class="controls-row">
+          <!-- Theme toggle -->
+          <button id="themeToggle" class="toggle" aria-label="Toggle theme">Toggle</button>
+        </div>
       </header>
 
       <section id="content">Loading text…</section>
@@ -37,11 +59,49 @@
         <a href="/" id="home">Home</a>
         <a id="next" href="#">Next →</a>
       </nav>
+
+      <div style="text-align:center; margin-top:24px;">
+        <a href="https://ko-fi.com/YOURNAME" target="_blank">
+          <img src="https://storage.ko-fi.com/cdn/kofi1.png?v=3"
+               alt="Buy Me a Coffee at ko-fi.com"
+               style="height:36px;border-radius:6px">
+        </a>
+      </div>
+
+      <!-- Comments -->
+      <div id="comments">
+        <div id="utterances_container"></div>
+        <noscript style="color:var(--muted)">Comments require JavaScript. Enable JS to view or post comments.</noscript>
+      </div>
+
     </div>
   </div>
 
 <script>
 (function(){
+  // Theme initialization and toggle
+  const root = document.documentElement;
+  const stored = localStorage.getItem('vasava-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // default to stored -> system -> dark
+  if(stored) root.setAttribute('data-theme', stored);
+  else root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+
+  function setTheme(t){
+    root.setAttribute('data-theme', t);
+    localStorage.setItem('vasava-theme', t);
+    updateThemeButton();
+    setUtterancesTheme(t);
+  }
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', ()=>{
+    const cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  function updateThemeButton(){ btn.textContent = (root.getAttribute('data-theme') === 'dark') ? 'Light' : 'Dark'; }
+  updateThemeButton();
+
+  // Reader logic
   const params = new URLSearchParams(location.search);
   let n = parseInt(params.get('n'),10) || 490;
   const first = 490, last = 710;
@@ -66,6 +126,57 @@
   }).catch(e=>{
     document.getElementById("content").innerHTML = '<p style="color:#f88">Text file not found. Create '+txtFile+' and paste your chapter text into it.</p>';
   });
+
+  // Utterances: inject script and handle theme syncing
+  function addUtterances(){
+    // Replace repo value below with YOUR_GITHUB_USERNAME/YOUR_REPO
+    const repoFull = "Jaiii13/Jaiii13.github.io";
+    const script = document.createElement('script');
+    script.src = "https://utteranc.es/client.js";
+    script.async = true;
+    script.setAttribute('repo', repoFull);
+    script.setAttribute('issue-term', 'pathname');
+    // default theme will be set after load via postMessage
+    script.setAttribute('theme', root.getAttribute('data-theme') === 'light' ? 'github-light' : 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+    const container = document.getElementById('utterances_container');
+    container.appendChild(script);
+  }
+
+  // Post message to utterances iframe to change theme
+  function setUtterancesTheme(siteTheme){
+    const iframe = document.querySelector('iframe.utterances-frame');
+    if(!iframe) return;
+    const utterancesTheme = siteTheme === 'light' ? 'github-light' : 'github-dark';
+    iframe.contentWindow.postMessage({type: 'set-theme', theme: utterancesTheme}, 'https://utteranc.es');
+  }
+
+  // Try to set utterances theme after iframe loads, with retries
+  function syncUtterancesTheme(){
+    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 300);
+    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 800);
+    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 2000);
+  }
+
+  // Initialize utterances
+  addUtterances();
+  // observe DOM to sync theme when iframe appears
+  const obs = new MutationObserver((m)=>{
+    for(const rec of m){
+      for(const node of rec.addedNodes){
+        if(node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe.utterances-frame'))){
+          syncUtterancesTheme();
+          obs.disconnect();
+          return;
+        }
+      }
+    }
+  });
+  obs.observe(document.getElementById('utterances_container'), {childList:true, subtree:true});
+
+  // Also sync when theme changes
+  new MutationObserver(()=>{ syncUtterancesTheme(); }).observe(root, {attributes:true, attributeFilter:['data-theme']});
+
 })();
 </script>
 </body>
