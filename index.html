@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Vasava Translations — Chapters 490–586</title>
+<title>VASAVA TRANSLATIONS — Chapters 490–586</title>
 <style>
   :root{
     --bg:#ffffff;
     --card:#ffffff;
     --text:#0a0a0a;
     --muted:#6b7280;
-    --border: #e6e6e6;
+    --border:#e6e6e6;
     --accent:#000000;
     --toggle-w:56px; --toggle-h:32px;
   }
@@ -26,9 +26,17 @@
   html,body{height:100%;margin:0}
   body{
     font-family:Inter,system-ui,Arial,Helvetica,sans-serif;
-    min-height:100vh;margin:0;background:var(--bg);color:var(--text);
-    display:flex;align-items:flex-start;justify-content:center;padding:36px;
+    min-height:100vh;background:var(--bg);color:var(--text);
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    padding:24px;gap:20px;
     -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  }
+
+  .title-box{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:10px;padding:16px 24px;
+    font-weight:800;font-size:1.3rem;text-align:center;
+    box-shadow:0 6px 16px rgba(0,0,0,0.04);letter-spacing:0.5px;
   }
 
   .box{
@@ -36,59 +44,63 @@
     box-shadow:0 8px 24px rgba(0,0,0,0.04);border:1px solid var(--border);
   }
 
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   .brand{display:flex;flex-direction:column;gap:4px}
-  h1{margin:0;font-size:1.125rem;font-weight:700}
+  h2{margin:0;font-size:1rem;font-weight:700}
   .sub{color:var(--muted);font-size:0.92rem}
 
-  .controls{display:flex;gap:10px;align-items:center}
-  .theme-toggle {
-    width: var(--toggle-w); height: var(--toggle-h); border-radius:999px;
-    display:inline-flex;align-items:center;padding:4px;gap:6px;border:1px solid var(--border);
+  .controls{display:flex;align-items:center}
+  .theme-toggle{
+    width:var(--toggle-w);height:var(--toggle-h);border-radius:999px;
+    display:inline-flex;align-items:center;padding:4px;border:1px solid var(--border);
     background:transparent;cursor:pointer;transition:all .2s ease;
   }
   .theme-toggle[data-mode="dark"] .theme-orb{
-    transform: translateX(calc(var(--toggle-w) - var(--toggle-h)));
+    transform:translateX(calc(var(--toggle-w) - var(--toggle-h)));
     background:var(--accent);
-    box-shadow:none;
   }
   .theme-orb{
-    width: calc(var(--toggle-h) - 8px); height: calc(var(--toggle-h) - 8px);
-    border-radius:50%; background:var(--accent); transition:transform .25s cubic-bezier(.2,.9,.3,1);
-    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+    width:calc(var(--toggle-h) - 8px);height:calc(var(--toggle-h) - 8px);
+    border-radius:50%;background:var(--accent);
+    transition:transform .25s cubic-bezier(.2,.9,.3,1);
   }
 
   .works{margin-top:8px;display:flex;align-items:center;gap:12px}
   .ofpv-btn{
-    background:transparent;border:1px solid var(--border);padding:8px 12px;border-radius:8px;cursor:pointer;
-    font-weight:700;color:var(--text);
+    background:transparent;border:1px solid var(--border);
+    padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700;color:var(--text);
   }
   .ofpv-btn:hover{transform:translateY(-2px)}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:12px}
-  .item{padding:10px;border-radius:8px;text-align:center;text-decoration:none;color:var(--text);display:block;border:1px solid var(--border);font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+        gap:12px;margin-top:12px}
+  .item{padding:10px;border-radius:8px;text-align:center;text-decoration:none;
+        color:var(--text);display:block;border:1px solid var(--border);font-weight:600}
   .item:hover,.item:focus{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.04)}
 
-  .note{margin-top:16px;padding:12px;border-radius:8px;color:var(--muted);font-size:0.95rem;border:1px dashed var(--border);background:transparent}
-
-  .skip-link{position:absolute;left:10px;top:10px;background:#fff;padding:8px;border-radius:6px;transform:translateY(-140%);transition:transform .18s ease;font-size:0.95rem}
+  .note{margin-top:16px;padding:12px;border-radius:8px;color:var(--muted);font-size:0.95rem;
+        border:1px dashed var(--border)}
+  .skip-link{position:absolute;left:10px;top:10px;background:#fff;padding:8px;border-radius:6px;
+             transform:translateY(-140%);transition:transform .18s ease;font-size:0.95rem}
   .skip-link:focus{transform:none}
 
-  @media (max-width:520px){ .box{padding:16px} }
+  @media(max-width:520px){.box{padding:16px}}
 </style>
 </head>
 <body>
   <a class="skip-link" href="#chapters">Skip to chapters</a>
 
+  <div class="title-box">VASAVA TRANSLATIONS</div>
+
   <div class="box" id="page" role="region" aria-label="Vasava translations">
     <header>
       <div class="brand">
-        <h1>Vasava</h1>
-        <div class="sub">Translations · reader index</div>
+        <h2>Reader Index</h2>
+        <div class="sub">Chapters 490–586</div>
       </div>
 
-      <div class="controls" role="group" aria-label="Header controls">
-        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme" data-mode="light" title="Toggle dark / light">
+      <div class="controls">
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme" data-mode="light">
           <span class="theme-orb" aria-hidden="true"></span>
         </button>
       </div>
@@ -103,80 +115,68 @@
       <div class="grid" id="list" role="list" aria-live="polite"></div>
     </nav>
 
-    <div class="note" role="note" aria-live="polite">
-      All chapters are free and the repo is public. I update the chapters as I read them. If you like my work consider donating. Thank you.
+    <div class="note">
+      I update the chapters as I read them. Everything is free. Visit <strong>r/ofpv</strong> for any queries or suggestions.
     </div>
   </div>
 
 <script>
-  const root = document.documentElement;
-  const storageKey = 'vasava-theme';
-  const stored = localStorage.getItem(storageKey);
-  // default to dark monochrome if not set
-  const initial = stored ? stored : 'dark';
+  const root=document.documentElement;
+  const storageKey='vasava-theme';
+  const stored=localStorage.getItem(storageKey);
+  const initial=stored?stored:'dark';
 
   function applyTheme(mode){
-    if(mode === 'dark') root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
-    localStorage.setItem(storageKey, mode);
-    themeToggle.setAttribute('aria-pressed', String(mode === 'dark'));
-    themeToggle.setAttribute('data-mode', mode === 'dark' ? 'dark' : 'light');
+    if(mode==='dark') root.setAttribute('data-theme','dark');
+    else root.removeAttribute('data-theme');
+    localStorage.setItem(storageKey,mode);
+    themeToggle.setAttribute('aria-pressed',String(mode==='dark'));
+    themeToggle.setAttribute('data-mode',mode==='dark'?'dark':'light');
   }
 
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle.addEventListener('click', ()=>{
-    const nowDark = root.getAttribute('data-theme') === 'dark';
-    applyTheme(nowDark ? 'light' : 'dark');
+  const themeToggle=document.getElementById('themeToggle');
+  themeToggle.addEventListener('click',()=>{
+    const nowDark=root.getAttribute('data-theme')==='dark';
+    applyTheme(nowDark?'light':'dark');
   });
   applyTheme(initial);
 
-  /* Create chapters list */
-  (function createChapters(){
-    const start = 490, end = 586;
-    const list = document.getElementById('list');
-    const frag = document.createDocumentFragment();
+  // build chapters
+  (function(){
+    const start=490,end=586;
+    const list=document.getElementById('list');
+    const frag=document.createDocumentFragment();
     for(let i=start;i<=end;i++){
-      const a = document.createElement('a');
-      a.className = 'item';
-      a.href = `chapters/reader.html?n=${i}`;
-      a.textContent = `Chapter ${i}`;
-      a.setAttribute('role','listitem');
-      a.setAttribute('tabindex','-1');
+      const a=document.createElement('a');
+      a.className='item';a.href=`chapters/reader.html?n=${i}`;
+      a.textContent=`Chapter ${i}`;
+      a.setAttribute('role','listitem');a.setAttribute('tabindex','-1');
       frag.appendChild(a);
     }
     list.appendChild(frag);
   })();
 
-  /* ofpv toggle */
-  const ofpvBtn = document.getElementById('ofpvBtn');
-  const chapters = document.getElementById('chapters');
+  const ofpvBtn=document.getElementById('ofpvBtn');
+  const chapters=document.getElementById('chapters');
   function setItemsTabIndex(val){
-    document.querySelectorAll('#list .item').forEach(el => el.setAttribute('tabindex', String(val)));
+    document.querySelectorAll('#list .item').forEach(el=>el.setAttribute('tabindex',String(val)));
   }
-  ofpvBtn.addEventListener('click', ()=>{
-    const hidden = chapters.hasAttribute('hidden');
+  ofpvBtn.addEventListener('click',()=>{
+    const hidden=chapters.hasAttribute('hidden');
     if(hidden){
       chapters.removeAttribute('hidden');
       ofpvBtn.setAttribute('aria-expanded','true');
-      ofpvBtn.textContent = 'Hide chapters 490–586';
+      ofpvBtn.textContent='Hide chapters 490–586';
       setItemsTabIndex(0);
-      const first = document.querySelector('#list .item');
-      if(first) first.focus();
+      const first=document.querySelector('#list .item');if(first) first.focus();
     } else {
       chapters.setAttribute('hidden','');
       ofpvBtn.setAttribute('aria-expanded','false');
-      ofpvBtn.textContent = 'ofpv chapters 490–586';
+      ofpvBtn.textContent='ofpv chapters 490–586';
       setItemsTabIndex(-1);
       ofpvBtn.focus();
     }
   });
-
-  /* simple keyboard focus outlines for accessibility */
-  document.addEventListener('keydown', (e)=> { if(e.key === 'Tab') document.body.classList.add('user-tabbing') });
-  document.addEventListener('mousedown', ()=> document.body.classList.remove('user-tabbing'));
-  document.addEventListener('focusin', e=>{
-    if(document.body.classList.contains('user-tabbing')) e.target.style.outline = '2px solid rgba(0,0,0,0.12)';
-  });
-  document.addEventListener('focusout', e=> e.target.style.outline = '');
 </script>
 </body>
 </html>
