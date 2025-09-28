@@ -2,346 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Vasava Translations — OFPV 490–586 (Overengineered)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="description" content="Vasava Translations — community-run OFPV collection (chapters 490–586). Free, public, and shipped with every feature imaginable."/>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect rx='20' width='100' height='100' fill='%238b5cf6'/%3E%3Ctext x='50' y='60' font-size='46' text-anchor='middle' fill='white' font-family='Arial' font-weight='700'%3EVT%3C/text%3E%3C/svg%3E">
+<title>Vasava Translations — Cozy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect rx='20' width='100' height='100' fill='%23c47bff'/%3E%3Ctext x='50' y='60' font-size='46' text-anchor='middle' fill='white' font-family='Georgia'%3EVT%3C/text%3E%3C/svg%3E">
 <style>
-  /* ---------- THEME + BASIC LAYOUT ---------- */
+  /* colors / mood */
   :root{
-    --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#7c3aed; --accent-2:#06b6d4;
-    --glass: rgba(255,255,255,0.03); --glass-2: rgba(255,255,255,0.02);
-    --radius:12px; --maxw:1200px; --mono: ui-monospace, Menlo, monospace;
+    --bg:#f6efe6;         /* warm paper */
+    --card:#fff7ef;       /* panel */
+    --text:#2b2b2b;       /* dark warm */
+    --muted:#7a6a5a;      /* muted brown */
+    --accent:#b86bff;     /* gentle purple */
+    --accent-2:#ffb86b;   /* soft gold */
+    --shadow: 0 10px 30px rgba(34,30,26,0.08);
+    --radius:14px;
+    --serif: 'Georgia', 'Times New Roman', serif;
   }
-  [data-theme="light"]{
-    --bg:#f5f7fb; --card:#ffffff; --muted:#6b7280; --accent:#7c3aed; --accent-2:#0ea5b7;
-    --glass: rgba(255,255,255,0.6); --glass-2: rgba(0,0,0,0.02);
+  [data-theme="dark"]{
+    --bg:#0f0e0c;
+    --card:#141312;
+    --text:#efe8dd;
+    --muted:#b9a89a;
+    --accent:#b86bff;
+    --accent-2:#ffb86b;
+    --shadow: 0 10px 30px rgba(0,0,0,0.6);
   }
 
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--muted)}
-  .wrap{max-width:var(--maxw);margin:28px auto;padding:20px}
-  .card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--glass-2);box-shadow:0 10px 40px rgba(2,6,23,0.6);color:var(--muted)}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  /* base */
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.45}
+  .wrap{max-width:880px;margin:36px auto;padding:22px}
+  /* soft paper texture */
+  .paper{
+    background:
+      radial-gradient(circle at 10% 10%, rgba(255,255,255,0.25), transparent 10%),
+      linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%),
+      var(--card);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(0,0,0,0.03);
+  }
+
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
   .brand{display:flex;gap:12px;align-items:center}
-  .logo{width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;background:linear-gradient(135deg,var(--accent),#3b1258);box-shadow:0 10px 30px rgba(0,0,0,0.4)}
-  h1{margin:0;font-size:1.25rem;color:var(--muted)}
-  .subtitle{font-size:0.9rem;color:var(--muted);margin-top:4px}
-  .controls{display:flex;gap:8px;align-items:center}
-
-  /* ---------- HERO + PARTICLES ---------- */
-  .hero{
-    margin-top:14px;border-radius:10px;padding:18px;position:relative;overflow:hidden;
-    background:linear-gradient(180deg, rgba(124,58,237,0.06), rgba(6,182,212,0.02));
-    display:flex;justify-content:space-between;gap:12px;align-items:center;
+  .badge{
+    width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent),#6b3bff);color:white;font-weight:700;font-family:var(--serif);
+    box-shadow:0 8px 24px rgba(107,58,183,0.08);
   }
-  .hero-left{max-width:68%}
-  .hero h2{margin:0;color:var(--muted);font-size:1.05rem}
-  .hero p{margin:6px 0 0 0;color:var(--muted);opacity:0.95;font-size:0.95rem}
-  canvas.particles{position:absolute;inset:0;opacity:0.08;pointer-events:none}
+  h1{margin:0;font-family:var(--serif);font-size:1.2rem}
+  .sub{color:var(--muted);font-size:0.95rem;margin-top:6px}
 
-  /* ---------- GRID + OFPV ---------- */
-  .grid{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:16px}
-  .column{display:flex;flex-direction:column;gap:12px}
-  .ofpv-btn{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;border:1px solid var(--glass-2);cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
-  .ofpv-list{overflow:hidden;transition:max-height .36s cubic-bezier(.2,.9,.2,1),opacity .28s;max-height:0;opacity:0;padding:0 8px}
-  .ofpv-list.open{max-height:640px;opacity:1;padding:10px}
-  .links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
-  .link{display:block;padding:8px;border-radius:8px;text-decoration:none;text-align:center;border:1px solid var(--glass-2);color:var(--muted);background:transparent}
-  .link:hover{transform:translateY(-6px);transition:transform .12s}
+  .controls{display:flex;gap:8px;align-items:center}
+  button.btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px 10px;border-radius:10px;cursor:pointer;color:var(--text)}
+  button.cta{background:var(--accent);color:white;border:none;padding:8px 12px;border-radius:10px;cursor:pointer}
 
-  /* ---------- ASIDE ---------- */
-  aside.panel{padding:12px;border-radius:10px;background:var(--card);border:1px solid var(--glass-2);min-height:120px}
-  .small{font-size:0.9rem;color:var(--muted)}
-  input,select,button{background:transparent;color:var(--muted);border:1px solid var(--glass-2);padding:8px;border-radius:8px}
-  .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+  /* hero */
+  .hero{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(184,107,255,0.04), rgba(255,184,107,0.02))}
+  .hero h2{margin:0;font-family:var(--serif);font-size:1.05rem}
+  .hero p{margin:6px 0 0 0;color:var(--muted)}
 
-  /* ---------- MICRO UI ---------- */
-  .prefs{display:flex;gap:8px;align-items:center}
-  .meta{margin-top:10px;color:var(--muted);font-size:0.9rem}
-  .kbd{font-family:var(--mono);background:rgba(0,0,0,0.2);padding:2px 6px;border-radius:6px;color:var(--muted);font-size:0.8rem}
+  /* OFPV area */
+  .ofpv-wrap{margin-top:16px}
+  .ofpv-toggle{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);cursor:pointer;background:transparent}
+  .ofpv-list{overflow:hidden;max-height:0;opacity:0;transition:max-height .32s ease,opacity .2s;padding:0}
+  .ofpv-list.open{max-height:520px;opacity:1;padding:10px 6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:8px}
+  a.link{display:block;padding:10px;border-radius:10px;text-decoration:none;text-align:center;background:transparent;border:1px solid rgba(0,0,0,0.035);color:var(--text);font-family:var(--serif)}
+  a.link:hover{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));transform:translateY(-3px);transition:transform .12s}
 
-  /* ---------- MODALS / TOASTS ---------- */
-  .toast{position:fixed;right:20px;bottom:20px;background:linear-gradient(180deg,#111,#222);color:#fff;padding:10px 12px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.6);display:none}
-  .toast.show{display:block;animation:toastIn .32s ease}
-  @keyframes toastIn{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+  /* aside / controls */
+  .actions{display:flex;gap:8px;align-items:center;margin-top:12px}
+  input[type=number], input[type=search]{padding:8px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent;color:var(--text)}
+  .note{margin-top:12px;color:var(--muted);font-size:0.95rem}
 
-  /* responsive */
-  @media (max-width:880px){ .grid{grid-template-columns:1fr} .hero-left{max-width:100%} .logo{width:46px;height:46px} }
+  /* cozy touches */
+  .foot{margin-top:18px;color:var(--muted);font-size:0.92rem;text-align:center}
+  .warm{color:var(--accent-2);font-weight:600}
+  @media (max-width:680px){
+    .hero{flex-direction:column;align-items:flex-start} 
+    .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  }
 </style>
 </head>
-<body data-theme="">
+<body>
   <div class="wrap">
-    <div class="card" role="main" aria-labelledby="title">
+    <main class="paper" role="main" aria-labelledby="site-title">
       <header>
         <div class="brand">
-          <div class="logo" aria-hidden>VT</div>
+          <div class="badge" aria-hidden>VT</div>
           <div>
-            <h1 id="title">Vasava Translations</h1>
-            <div class="subtitle">Community-run • Free • OFPV 490–586</div>
+            <h1 id="site-title">Vasava Translations</h1>
+            <div class="sub">Cozy reading • Community-run • OFPV 490–586</div>
           </div>
         </div>
 
-        <div class="controls" role="toolbar" aria-label="controls">
-          <div class="prefs">
-            <label class="small">Font<select id="fontSel" title="Choose font"><option value="system-ui,Arial">Default</option><option value="Georgia,serif">Georgia</option><option value="'Times New Roman',serif">Times</option><option value="monospace">Mono</option></select></label>
-            <label class="small">Size<select id="sizeSel" title="Text size"><option value="15">15</option><option value="17" selected>17</option><option value="19">19</option><option value="21">21</option></select></label>
-          </div>
-          <button id="themeBtn" class="btn" title="Toggle theme">Dark</button>
-          <button id="accentBtn" class="btn" title="Pick accent">Accent</button>
-          <a class="cta" href="https://ko-fi.com/vasavatls" target="_blank" rel="noopener">Donate</a>
+        <div class="controls" role="toolbar" aria-label="site controls">
+          <button id="themeToggle" class="btn" aria-pressed="false">Dark</button>
+          <a class="cta" href="chapters/reader.html?n=490">Start reading</a>
         </div>
       </header>
 
-      <!-- animated hero with particles -->
-      <section class="hero" aria-label="hero">
-        <canvas class="particles" width="1200" height="200" aria-hidden="true"></canvas>
-        <div class="hero-left">
-          <h2>Everything is free. Community-run. Open repo.</h2>
-          <p>Read chapters 490–586. Want to help translate? DM <strong>jaide.e</strong> on Discord. This page is packed with UX features — keyboard shortcuts, offline caching, prefetching, bookmarks, reactions, and more.</p>
-          <div style="margin-top:10px;display:flex;gap:10px">
-            <a class="cta" href="chapters/reader.html?n=490" title="Start reading">Start reading</a>
-            <button id="openOFPV" class="btn secondary">Open OFPV</button>
-          </div>
+      <section class="hero" aria-label="intro">
+        <div>
+          <h2>All chapters free. Take a seat, make tea.</h2>
+          <p>Community-run and public. Want to help translate? DM <strong>jaide.e</strong> on Discord. Chapters 490–586 are grouped under OFPV.</p>
         </div>
-        <div style="text-align:right" aria-hidden>
-          <svg width="120" height="120" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><circle cx="50" cy="50" r="44" fill="url(#g)" opacity="0.22"/></svg>
+        <div style="text-align:right">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='86' height='86'><rect rx='14' width='86' height='86' fill='%23b86bff'/><text x='43' y='54' font-size='36' text-anchor='middle' fill='white' font-family='Georgia'>VT</text></svg>" alt="" style="border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)">
         </div>
       </section>
 
-      <div class="grid" aria-label="main content">
-        <div class="column">
-          <div class="ofpv-btn" id="ofpvToggle" role="button" aria-expanded="false" aria-controls="ofpvList">
-            <div><strong>OFPV</strong> <span class="small">Chapters 490–586</span></div>
-            <div class="small">Grouped</div>
-          </div>
-
-          <div id="ofpvList" class="ofpv-list" aria-hidden="true" tabindex="-1">
-            <div class="links-grid" id="linksGrid" aria-live="polite"></div>
-            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-              <input id="filter" placeholder="Filter or paste a chapter number" aria-label="Filter chapters" />
-              <button id="filterBtn" class="btn">Filter</button>
-              <button id="clearFilter" class="btn">Clear</button>
-            </div>
-            <div style="margin-top:10px" class="meta">
-              <span class="kbd">O</span> toggles OFPV • <span class="kbd">F</span> focuses filter • Double-click OFPV opens Ch490
-            </div>
-          </div>
-
-          <!-- extras: reading queue + bookmarks + reactions -->
-          <div style="margin-top:12px;padding:12px;border-radius:10px;background:var(--card);border:1px solid var(--glass-2)">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div style="font-weight:600">Reading queue</div>
-              <button id="clearQueue" class="btn">Clear</button>
-            </div>
-            <div id="queue" style="margin-top:8px" class="small">No queued chapters. Add from links.</div>
-            <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-              <div style="font-weight:600">Bookmarks</div>
-              <button id="showBookmarks" class="btn">Show</button>
-            </div>
-            <div id="bookmarks" style="margin-top:8px" class="small">No bookmarks.</div>
-          </div>
+      <div class="ofpv-wrap" aria-hidden="false">
+        <div id="ofpvToggle" class="ofpv-toggle" role="button" tabindex="0" aria-expanded="false">
+          <div><strong>OFPV</strong> <span class="note">Chapters 490–586</span></div>
+          <div class="note">grouped</div>
         </div>
 
-        <aside class="panel" aria-label="quick actions">
-          <div style="font-weight:700">Quick jump</div>
-          <div style="margin-top:8px;display:flex;gap:8px">
-            <input id="jump" type="number" min="490" max="586" placeholder="490" />
-            <button id="jumpBtn" class="cta">Open</button>
-          </div>
-
-          <div style="margin-top:12px">
-            <div class="small" style="margin-bottom:6px"><strong>Local reactions</strong> (stored in your browser)</div>
-            <div style="display:flex;gap:8px">
-              <button id="reactHeart" title="Heart">❤️ <span id="heartCount">0</span></button>
-              <button id="reactLike" title="Like">👍 <span id="likeCount">0</span></button>
-              <button id="reactLaugh" title="Laugh">😂 <span id="laughCount">0</span></button>
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <div class="small"><strong>Preferences</strong></div>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button id="prefSave" class="btn">Save prefs</button>
-              <button id="prefReset" class="btn">Reset</button>
-            </div>
-          </div>
-        </aside>
+        <div id="ofpvList" class="ofpv-list" aria-hidden="true">
+          <div id="ofpvGrid" class="grid" aria-live="polite"></div>
+        </div>
       </div>
 
-      <div style="margin-top:14px;text-align:center" class="meta">
-        Everything is free. Repo is public. Community-run. Want to help translate? DM <strong>jaide.e</strong> on Discord.
+      <div class="actions" role="region" aria-label="navigation">
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="jump" type="number" min="490" max="586" placeholder="490" aria-label="Jump to chapter">
+          <button id="jumpBtn" class="btn">Open</button>
+        </div>
+
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <input id="search" type="search" placeholder="Search (press F)" aria-label="Search chapters">
+          <button id="searchBtn" class="btn">Go</button>
+        </div>
       </div>
-    </div>
+
+      <div class="note">Double-click OFPV to open chapter 490. Keyboard: <span class="warm">O</span> toggle, <span class="warm">F</span> focus search.</div>
+
+      <div class="foot">Everything is free. Repo public. Community translations. DM <strong>jaide.e</strong> on Discord to help.</div>
+    </main>
   </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
 <script>
-/* ================= CONFIG ================= */
-const START = 490, END = 586;
-const linksGrid = document.getElementById('linksGrid');
-const ofpvList = document.getElementById('ofpvList');
-const ofpvToggle = document.getElementById('ofpvToggle');
-const filterInput = document.getElementById('filter');
-const toast = document.getElementById('toast');
-
-/* ================ THEME & PREFS ================= */
-(function themeInit(){
+  const START=490, END=586;
   const root = document.documentElement;
+  // theme init on documentElement
   const stored = localStorage.getItem('vasava-theme');
-  const storedFont = localStorage.getItem('vasava-font');
-  const storedSize = localStorage.getItem('vasava-size');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   root.setAttribute('data-theme', stored || (prefersDark ? 'dark' : ''));
-  document.getElementById('themeBtn').textContent = root.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark';
-
-  const fontSel = document.getElementById('fontSel');
-  const sizeSel = document.getElementById('sizeSel');
-  if(storedFont) fontSel.value = storedFont;
-  if(storedSize) sizeSel.value = storedSize;
-
-  // apply font/size to body for previews; reader will use stored values
-  document.body.style.fontFamily = fontSel.value;
-  document.body.style.fontSize = sizeSel.value + 'px';
-
-  document.getElementById('themeBtn').addEventListener('click', ()=>{
-    const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', cur);
-    document.getElementById('themeBtn').textContent = cur === 'dark' ? 'Light' : 'Dark';
-    localStorage.setItem('vasava-theme', cur);
-    showToast('Theme set to '+cur);
+  const themeToggle = document.getElementById('themeToggle');
+  function updateThemeBtn(){ themeToggle.textContent = root.getAttribute('data-theme')==='dark' ? 'Light' : 'Dark'; themeToggle.setAttribute('aria-pressed', root.getAttribute('data-theme')==='dark'); }
+  themeToggle.addEventListener('click', ()=>{
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('vasava-theme', next);
+    updateThemeBtn();
   });
+  updateThemeBtn();
 
-  fontSel.addEventListener('change', ()=>{ localStorage.setItem('vasava-font', fontSel.value); document.body.style.fontFamily = fontSel.value; showToast('Font saved to '+fontSel.value); });
-  sizeSel.addEventListener('change', ()=>{ localStorage.setItem('vasava-size', sizeSel.value); document.body.style.fontSize = sizeSel.value+'px'; showToast('Size saved'); });
-
-  document.getElementById('prefSave').addEventListener('click', ()=>{ localStorage.setItem('vasava-font', fontSel.value); localStorage.setItem('vasava-size', sizeSel.value); showToast('Preferences saved'); });
-  document.getElementById('prefReset').addEventListener('click', ()=>{ localStorage.removeItem('vasava-font'); localStorage.removeItem('vasava-size'); fontSel.value='system-ui,Arial'; sizeSel.value='17'; document.body.style.fontFamily=''; document.body.style.fontSize=''; showToast('Preferences reset'); });
-})();
-
-/* ================ PARTICLES CANVAS ================ */
-(function particles(){
-  const canvas = document.querySelector('canvas.particles');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w = canvas.width = canvas.clientWidth;
-  let h = canvas.height = canvas.clientHeight;
-  const particles = [];
-  function rand(min,max){ return Math.random()*(max-min)+min; }
-  for(let i=0;i<40;i++) particles.push({x:rand(0,w),y:rand(0,h),r:rand(0.6,2.2),vx:rand(-0.2,0.2),vy:rand(-0.15,0.15)});
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    for(const p of particles){
-      p.x += p.vx; p.y += p.vy;
-      if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
-      if(p.y < -10) p.y = h+10; if(p.y > h+10) p.y = -10;
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(255,255,255,0.06)';
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
-    }
-    requestAnimationFrame(draw);
-  }
-  window.addEventListener('resize', ()=>{ w=canvas.width=canvas.clientWidth; h=canvas.height=canvas.clientHeight; });
-  draw();
-})();
-
-/* ================ BUILD LINKS + PREFETCH ================= */
-(function buildLinks(){
+  // build grid
+  const grid = document.getElementById('ofpvGrid');
   for(let i=START;i<=END;i++){
     const a = document.createElement('a');
-    a.className = 'link';
-    a.href = `chapters/reader.html?n=${i}&font=${encodeURIComponent(localStorage.getItem('vasava-font')||'')}&size=${encodeURIComponent(localStorage.getItem('vasava-size')||'')}`;
-    a.textContent = 'Ch ' + i;
-    a.dataset.n = i;
-    a.setAttribute('title','Open chapter '+i);
+    a.className='link';
+    a.href = `chapters/reader.html?n=${i}`;
+    a.textContent = `Ch ${i}`;
     a.addEventListener('mouseenter', ()=>prefetch(a.href));
-    a.addEventListener('click', (e)=>{ if(e.ctrlKey||e.metaKey) return; e.preventDefault(); queueOpen(Number(a.dataset.n)); });
-    // context menu: bookmark or add to queue
-    a.addEventListener('contextmenu', e=>{ e.preventDefault(); bookmark(Number(a.dataset.n)); });
-    linksGrid.appendChild(a);
+    a.addEventListener('focus', ()=>prefetch(a.href));
+    a.addEventListener('click', (e)=>{ if(e.ctrlKey||e.metaKey) return; }); // normal navigation
+    grid.appendChild(a);
   }
-})();
 
-/* ================ QUEUE + BOOKMARKS ================ */
-function loadQueue(){ return JSON.parse(localStorage.getItem('vasava-queue')||'[]'); }
-function saveQueue(q){ localStorage.setItem('vasava-queue', JSON.stringify(q)); renderQueue(); }
-function renderQueue(){ const q=loadQueue(); const el=document.getElementById('queue'); if(!q.length){ el.textContent='No queued chapters. Right-click a link to add.'; return; } el.innerHTML = q.map(n=>`<div><a href="chapters/reader.html?n=${n}">Ch ${n}</a> <button data-n="${n}" class="deq">Remove</button></div>`).join(''); el.querySelectorAll('.deq').forEach(b=>b.addEventListener('click', ()=>{ const n=Number(b.dataset.n); const arr=loadQueue().filter(x=>x!==n); saveQueue(arr); }));
-}
-function queueOpen(n){ const q=loadQueue(); if(!q.includes(n)){ q.push(n); saveQueue(q); showToast('Added Ch '+n+' to queue'); } else showToast('Already in queue'); }
-document.getElementById('clearQueue').addEventListener('click', ()=>{ localStorage.removeItem('vasava-queue'); renderQueue(); showToast('Queue cleared'); });
-renderQueue();
+  // toggle list
+  const ofpvToggle = document.getElementById('ofpvToggle');
+  const ofpvList = document.getElementById('ofpvList');
+  function toggleO(open){
+    const isOpen = ofpvList.classList.contains('open');
+    const next = typeof open === 'boolean' ? open : !isOpen;
+    ofpvList.classList.toggle('open', next);
+    ofpvList.setAttribute('aria-hidden', !next);
+    ofpvToggle.setAttribute('aria-expanded', next);
+    if(next) ofpvList.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  ofpvToggle.addEventListener('click', ()=> toggleO());
+  ofpvToggle.addEventListener('dblclick', ()=> location.href = `chapters/reader.html?n=${START}`);
 
-function loadBookmarks(){ return JSON.parse(localStorage.getItem('vasava-bookmarks')||'[]'); }
-function saveBookmarks(b){ localStorage.setItem('vasava-bookmarks', JSON.stringify(b)); renderBookmarks(); }
-function bookmark(n){ const b=loadBookmarks(); if(b.includes(n)){ showToast('Already bookmarked'); return; } b.push(n); saveBookmarks(b); showToast('Bookmarked Ch '+n); }
-function renderBookmarks(){ const b=loadBookmarks(); const el=document.getElementById('bookmarks'); if(!b.length){ el.textContent='No bookmarks.'; return; } el.innerHTML = b.map(n=>`<div><a href="chapters/reader.html?n=${n}">Ch ${n}</a> <button data-n="${n}" class="unbm">Remove</button></div>`).join(''); el.querySelectorAll('.unbm').forEach(b=>b.addEventListener('click', ()=>{ const arr=loadBookmarks().filter(x=>x!==Number(b.dataset.n)); saveBookmarks(arr); }));}
-document.getElementById('showBookmarks').addEventListener('click', ()=>{ renderBookmarks(); showToast('Bookmarks shown'); });
-renderBookmarks();
-
-/* ================ FILTER / SEARCH ================ */
-document.getElementById('filterBtn').addEventListener('click', ()=>applyFilter(filterInput.value));
-document.getElementById('clearFilter').addEventListener('click', ()=>{ filterInput.value=''; applyFilter(''); });
-filterInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') applyFilter(filterInput.value); });
-function applyFilter(q){
-  q = (q||'').trim().toLowerCase();
-  const nodes = Array.from(document.querySelectorAll('.link'));
-  if(!q){ nodes.forEach(n=>n.style.display=''); showToast('Filter cleared'); return; }
-  // numeric exact
-  const num = Number(q);
-  if(num && num>=START && num<=END){ location.href=`chapters/reader.html?n=${num}`; return; }
-  // substring match on "ch N"
-  let matched = 0;
-  nodes.forEach(n=>{
-    const txt = n.textContent.toLowerCase();
-    if(txt.includes(q)){ n.style.display=''; matched++; } else n.style.display='none';
+  // jump and search
+  document.getElementById('jumpBtn').addEventListener('click', ()=>{
+    const n = Number(document.getElementById('jump').value) || START;
+    if(n<START || n>END){ alert('Enter chapter between '+START+' and '+END); return; }
+    location.href = `chapters/reader.html?n=${n}`;
   });
-  showToast(`Filter matched ${matched} chapters`);
-}
+  const search = document.getElementById('search');
+  document.getElementById('searchBtn').addEventListener('click', ()=> doSearch(search.value.trim()));
+  function doSearch(q){
+    if(!q) return;
+    const num = Number(q);
+    if(num && num>=START && num<=END){ location.href = `chapters/reader.html?n=${num}`; return; }
+    q = q.toLowerCase();
+    const found = Array.from(document.querySelectorAll('.link')).find(a => a.textContent.toLowerCase().includes(q));
+    if(found) location.href = found.href; else alert('No matches. Try a chapter number or exact "Ch N".');
+  }
 
-/* ================ JUMP & HOTKEYS ================ */
-document.getElementById('jumpBtn').addEventListener('click', ()=>{ const n=Number(document.getElementById('jump').value)||START; if(n<START||n>END){ alert('Enter between '+START+' and '+END); return; } location.href=`chapters/reader.html?n=${n}`; });
-document.addEventListener('keydown', (e)=>{ if(document.activeElement.tagName==='INPUT') return; if(e.key==='o' || e.key==='O'){ toggleOFPV(); e.preventDefault(); } if(e.key==='f' || e.key==='F'){ filterInput.focus(); e.preventDefault(); } if(e.key==='q' || e.key==='Q'){ document.getElementById('jump').focus(); } });
+  // keyboard shortcuts
+  document.addEventListener('keydown', (e)=>{
+    if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if(e.key === 'o' || e.key === 'O'){ toggleO(); e.preventDefault(); }
+    if(e.key === 'f' || e.key === 'F'){ search.focus(); e.preventDefault(); }
+  });
 
-/* ================ OFPV TOGGLE ================ */
-function toggleOFPV(){ const open = ofpvList.classList.toggle('open'); ofpvToggle.setAttribute('aria-expanded', open); ofpvList.setAttribute('aria-hidden', !open); if(open) ofpvList.scrollIntoView({behavior:'smooth',block:'center'}); }
-ofpvToggle.addEventListener('click', toggleOFPV);
-ofpvToggle.addEventListener('dblclick', ()=> location.href = `chapters/reader.html?n=${START}`);
-
-/* ================ PREFETCH + LINK WARMING ================ */
-const prefetchSet = new Set();
-function prefetch(url){
-  if(prefetchSet.has(url)) return;
-  prefetchSet.add(url);
-  const link = document.createElement('link'); link.rel='prefetch'; link.href = url; document.head.appendChild(link);
-  // quick fetch in background (no-cors)
-  fetch(url, {mode:'no-cors'}).catch(()=>{});
-}
-
-/* ================ LOCAL REACTIONS ================ */
-function loadReacts(){ return JSON.parse(localStorage.getItem('vasava-reacts')||'{"heart":0,"like":0,"laugh":0}'); }
-function saveReacts(r){ localStorage.setItem('vasava-reacts', JSON.stringify(r)); renderReacts(); }
-function renderReacts(){ const r=loadReacts(); document.getElementById('heartCount').textContent = r.heart||0; document.getElementById('likeCount').textContent = r.like||0; document.getElementById('laughCount').textContent = r.laugh||0; }
-document.getElementById('reactHeart').addEventListener('click', ()=>{ const r=loadReacts(); r.heart=(r.heart||0)+1; saveReacts(r); showToast('Thanks ❤️'); });
-document.getElementById('reactLike').addEventListener('click', ()=>{ const r=loadReacts(); r.like=(r.like||0)+1; saveReacts(r); showToast('Thanks 👍'); });
-document.getElementById('reactLaugh').addEventListener('click', ()=>{ const r=loadReacts(); r.laugh=(r.laugh||0)+1; saveReacts(r); });
-renderReacts();
-
-/* ================ TOAST ================ */
-let toastTimer = null;
-function showToast(msg, t=2000){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, t); }
-
-/* ================ SERVICE WORKER REGISTRATION HOOK ================ */
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js').then(()=>{ console.log('SW registered'); }).catch(()=>{});
-}
-
-/* ================ ACCESSIBILITY + small polish ================ */
-document.getElementById('openOFPV').addEventListener('click', ()=>{ toggleOFPV(); });
-document.getElementById('filter').addEventListener('focus', ()=>{ prefetch(`chapters/reader.html?n=${START}`); });
-
-/* DOM ready micro */
-document.addEventListener('DOMContentLoaded', ()=>{ showToast('Ready — press O to toggle OFPV, F to focus filter', 2600); });
+  // lightweight prefetch
+  const prefetched = new Set();
+  function prefetch(url){
+    if(prefetched.has(url)) return;
+    prefetched.add(url);
+    const l = document.createElement('link'); l.rel='prefetch'; l.href = url; document.head.appendChild(l);
+  }
 </script>
 </body>
 </html>
