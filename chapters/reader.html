@@ -33,8 +33,6 @@
   .toggle{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--text)}
   .controls-row{display:flex;gap:10px;align-items:center}
   p{margin:0 0 1em}
-  /* comments area spacing */
-  #comments { margin-top:28px; }
 </style>
 </head>
 <body>
@@ -68,12 +66,6 @@
         </a>
       </div>
 
-      <!-- Comments -->
-      <div id="comments">
-        <div id="utterances_container"></div>
-        <noscript style="color:var(--muted)">Comments require JavaScript. Enable JS to view or post comments.</noscript>
-      </div>
-
     </div>
   </div>
 
@@ -83,7 +75,6 @@
   const root = document.documentElement;
   const stored = localStorage.getItem('vasava-theme');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  // default to stored -> system -> dark
   if(stored) root.setAttribute('data-theme', stored);
   else root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
 
@@ -91,7 +82,6 @@
     root.setAttribute('data-theme', t);
     localStorage.setItem('vasava-theme', t);
     updateThemeButton();
-    setUtterancesTheme(t);
   }
   const btn = document.getElementById('themeToggle');
   btn.addEventListener('click', ()=>{
@@ -126,56 +116,6 @@
   }).catch(e=>{
     document.getElementById("content").innerHTML = '<p style="color:#f88">Text file not found. Create '+txtFile+' and paste your chapter text into it.</p>';
   });
-
-  // Utterances: inject script and handle theme syncing
-  function addUtterances(){
-    // Replace repo value below with YOUR_GITHUB_USERNAME/YOUR_REPO
-    const repoFull = "vasava13/vasava13.github.io";
-    const script = document.createElement('script');
-    script.src = "https://utteranc.es/client.js";
-    script.async = true;
-    script.setAttribute('repo', repoFull);
-    script.setAttribute('issue-term', 'pathname');
-    // default theme will be set after load via postMessage
-    script.setAttribute('theme', root.getAttribute('data-theme') === 'light' ? 'github-light' : 'github-dark');
-    script.setAttribute('crossorigin', 'anonymous');
-    const container = document.getElementById('utterances_container');
-    container.appendChild(script);
-  }
-
-  // Post message to utterances iframe to change theme
-  function setUtterancesTheme(siteTheme){
-    const iframe = document.querySelector('iframe.utterances-frame');
-    if(!iframe) return;
-    const utterancesTheme = siteTheme === 'light' ? 'github-light' : 'github-dark';
-    iframe.contentWindow.postMessage({type: 'set-theme', theme: utterancesTheme}, 'https://utteranc.es');
-  }
-
-  // Try to set utterances theme after iframe loads, with retries
-  function syncUtterancesTheme(){
-    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 300);
-    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 800);
-    setTimeout(()=>{ setUtterancesTheme(root.getAttribute('data-theme')); }, 2000);
-  }
-
-  // Initialize utterances
-  addUtterances();
-  // observe DOM to sync theme when iframe appears
-  const obs = new MutationObserver((m)=>{
-    for(const rec of m){
-      for(const node of rec.addedNodes){
-        if(node.tagName === 'IFRAME' || (node.querySelector && node.querySelector('iframe.utterances-frame'))){
-          syncUtterancesTheme();
-          obs.disconnect();
-          return;
-        }
-      }
-    }
-  });
-  obs.observe(document.getElementById('utterances_container'), {childList:true, subtree:true});
-
-  // Also sync when theme changes
-  new MutationObserver(()=>{ syncUtterancesTheme(); }).observe(root, {attributes:true, attributeFilter:['data-theme']});
 
 })();
 </script>
