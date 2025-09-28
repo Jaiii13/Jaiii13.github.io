@@ -6,167 +6,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root{
-    --bg:#050505; --panel:#0b0b0b; --card:#0f1720; --muted:#9aaeb0;
-    --text:#e6f7ef; --accent:#28c76f; --accent-2:#0ee6a8;
-    --glass: rgba(255,255,255,0.03); --radius:12px; --mono: ui-monospace, Menlo, monospace;
+    --bg:#000; --panel:#111; --text:#fff; --muted:#9aaeb0;
+    --accent:#28c76f; --radius:10px;
   }
   [data-theme="light"]{
-    --bg:#ffffff; --panel:#fbfbfb; --card:#f6f7f8; --muted:#4b5563;
-    --text:#0b1220; --accent:#16a34a; --accent-2:#34d399;
+    --bg:#fff; --panel:#f9f9f9; --text:#000; --muted:#555;
+    --accent:#28c76f;
   }
   html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-  .wrap{max-width:1100px;margin:34px auto;padding:22px}
-  .card{background:linear-gradient(180deg,var(--panel),#081015);border-radius:var(--radius);padding:18px;border:1px solid var(--glass);box-shadow:0 12px 40px rgba(0,0,0,0.7)}
+  .wrap{max-width:800px;margin:34px auto;padding:22px}
+  .card{background:var(--panel);border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,0.05)}
   header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  h1{margin:0;font-size:1.2rem;letter-spacing:0.6px}
-  .muted{color:var(--muted);font-size:0.92rem;margin-top:6px}
+  h1{margin:0;font-size:1.3rem;letter-spacing:0.6px}
   .controls{display:flex;gap:8px;align-items:center}
-  .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--text);cursor:pointer}
-  .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
-  .hero{margin-top:14px;padding:16px;border-radius:10px;background:linear-gradient(180deg,rgba(40,199,111,0.03),transparent);display:flex;justify-content:space-between;align-items:center}
-  .left{max-width:66%}
-  .note{color:var(--muted);margin-top:8px;font-size:0.95rem}
-  .collections{margin-top:16px;display:flex;flex-direction:column;gap:12px}
-  .collection{background:transparent;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.03)}
-  .coll-head{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;padding:6px 8px}
-  .coll-title{font-weight:700;letter-spacing:0.6px}
-  .coll-list{margin-top:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;max-height:0;overflow:hidden;opacity:0;transition:max-height .32s, opacity .22s}
-  .coll-list.open{max-height:520px;opacity:1}
-  a.link{display:block;padding:8px;border-radius:8px;text-decoration:none;text-align:center;border:1px solid rgba(255,255,255,0.03);color:var(--text);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
-  a.link:hover{transform:translateY(-4px);transition:transform .12s}
-  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
-  input[type=number],input[type=search]{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--text)}
-  .kbd{font-family:var(--mono);background:rgba(255,255,255,0.02);padding:4px 6px;border-radius:6px;color:var(--muted);font-size:0.85rem}
-  footer{margin-top:14px;color:var(--muted);font-size:0.92rem;text-align:center}
-  @media (max-width:720px){ .left{max-width:100%} .coll-list{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))} }
+  .btn{background:transparent;border:1px solid var(--muted);padding:6px 10px;border-radius:6px;color:var(--text);cursor:pointer;font-size:0.9rem}
+  .hero{margin-top:14px;padding:14px;border-radius:8px;background:rgba(40,199,111,0.08)}
+  .note{color:var(--muted);margin-top:6px;font-size:0.95rem}
+  .collections{margin-top:16px}
+  .collection{border:1px solid rgba(255,255,255,0.08);border-radius:8px}
+  .coll-head{padding:8px 10px;cursor:pointer;font-weight:600;background:transparent;color:var(--accent);font-size:0.95rem}
+  .coll-list{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s, opacity .2s;padding:0 8px}
+  .coll-list.open{max-height:500px;opacity:1;padding:8px}
+  a.link{display:block;padding:6px;border-radius:6px;text-decoration:none;text-align:center;border:1px solid rgba(255,255,255,0.08);color:var(--text);font-size:0.9rem}
+  a.link:hover{border-color:var(--accent)}
+  .actions{margin-top:14px}
+  input[type=number]{background:transparent;border:1px solid var(--muted);padding:6px 8px;border-radius:6px;color:var(--text);width:120px}
 </style>
 </head>
 <body>
   <div class="wrap">
     <section class="card" aria-labelledby="site-title">
       <header>
-        <div>
-          <h1 id="site-title">Vasava Translations</h1>
-          <div class="muted">Fan translations — community-run</div>
-        </div>
-
-        <div class="controls" role="toolbar" aria-label="controls">
-          <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle theme">Invert</button>
+        <h1 id="site-title">Vasava Translations</h1>
+        <div class="controls">
+          <button id="themeToggle" class="btn" aria-pressed="false">Toggle</button>
         </div>
       </header>
 
-      <div class="hero" role="region" aria-label="intro">
-        <div class="left">
-          <strong style="color:var(--accent)">All chapters are free. Repo is public.</strong>
-          <div class="note">I update chapters as I read them. If you value the work consider donating. Thank you.</div>
-        </div>
-
-        <div style="text-align:right">
-          <div style="color:var(--muted);font-size:0.95rem">Controls</div>
-          <div style="margin-top:8px"><span class="kbd">Jump</span> to a chapter below</div>
-        </div>
+      <div class="hero">
+        <strong style="color:var(--accent)">All chapters are free. Repo is public.</strong>
+        <div class="note">I update chapters as I read them. If you value the work consider donating. Thank you.</div>
       </div>
 
-      <div class="collections" id="collections" aria-live="polite">
-        <!-- JS will render collections -->
-      </div>
+      <div class="collections" id="collections"></div>
 
       <div class="actions">
-        <div style="display:flex;gap:8px;align-items:center">
-          <input id="jump" type="number" min="1" placeholder="Chapter #">
-          <button id="jumpBtn" class="btn">Open</button>
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center">
-          <input id="search" type="search" placeholder="Search chapters">
-          <button id="searchBtn" class="btn">Go</button>
-        </div>
+        <input id="jump" type="number" min="1" placeholder="Chapter #">
+        <button id="jumpBtn" class="btn">Open</button>
       </div>
-
-      <footer>Chapters 490–586 available under OFPV. Site public. Community translations.</footer>
     </section>
   </div>
 
 <script>
-/* configuration: collections */
+/* collection config */
 const collections = [
-  { id:'ofpv', title:'OFPV', from:490, to:586, description:'OFPV translation set' }
+  { id:'ofpv', title:'OFPV', from:490, to:586 }
 ];
 
 /* render */
 const container = document.getElementById('collections');
 collections.forEach(col=>{
-  const block = document.createElement('div');
-  block.className = 'collection';
-  block.innerHTML = `
-    <div class="coll-head" data-id="${col.id}">
-      <div class="coll-title">${col.title} ${col.from && col.to ? `<span style="color:var(--muted)">(${col.from}–${col.to})</span>` : ''}</div>
-      <div class="muted">${col.description||''}</div>
-    </div>
-    <div class="coll-list" id="list-${col.id}" aria-hidden="true"></div>
-  `;
+  const block=document.createElement('div');
+  block.className='collection';
+  block.innerHTML=`<div class="coll-head">${col.title}</div><div class="coll-list" id="list-${col.id}" aria-hidden="true"></div>`;
   container.appendChild(block);
 
-  const list = block.querySelector('.coll-list');
-  if(col.from && col.to){
-    for(let i=col.from;i<=col.to;i++){
-      const a = document.createElement('a');
-      a.className='link';
-      a.href = `chapters/reader.html?n=${i}`;
-      a.textContent = `Ch ${i}`;
-      a.addEventListener('mouseenter', ()=>prefetch(a.href));
-      list.appendChild(a);
-    }
+  const list=block.querySelector('.coll-list');
+  for(let i=col.from;i<=col.to;i++){
+    const a=document.createElement('a');
+    a.className='link'; a.href=`chapters/reader.html?n=${i}`; a.textContent=`Ch ${i}`;
+    list.appendChild(a);
   }
 
-  const head = block.querySelector('.coll-head');
-  head.addEventListener('click', ()=>{
-    const open = list.classList.toggle('open');
-    list.setAttribute('aria-hidden', !open);
-    if(open) list.scrollIntoView({behavior:'smooth', block:'center'});
+  block.querySelector('.coll-head').addEventListener('click',()=>{
+    list.classList.toggle('open');
+    list.setAttribute('aria-hidden', !list.classList.contains('open'));
   });
-  // double-click behavior removed
 });
 
-/* theme toggle fixed and persistent */
-const root = document.documentElement;
-const stored = localStorage.getItem('vasava-theme'); // "dark" or "light"
-root.setAttribute('data-theme', stored || 'dark'); // default to dark
-const themeBtn = document.getElementById('themeToggle');
-function updateThemeBtn(){
-  themeBtn.textContent = root.getAttribute('data-theme') === 'light' ? 'Dark' : 'Light';
-  themeBtn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'light');
-}
-themeBtn.addEventListener('click', ()=>{
-  const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-  root.setAttribute('data-theme', next);
-  localStorage.setItem('vasava-theme', next);
-  updateThemeBtn();
+/* theme toggle */
+const root=document.documentElement;
+const stored=localStorage.getItem('vasava-theme');
+root.setAttribute('data-theme', stored || 'dark');
+const btn=document.getElementById('themeToggle');
+function updateBtn(){ btn.textContent = root.getAttribute('data-theme')==='light'?'Dark':'Light'; }
+btn.addEventListener('click',()=>{
+  const next=root.getAttribute('data-theme')==='light'?'dark':'light';
+  root.setAttribute('data-theme',next);
+  localStorage.setItem('vasava-theme',next);
+  updateBtn();
 });
-updateThemeBtn();
+updateBtn();
 
-/* jump & search (no keyboard shortcuts) */
-document.getElementById('jumpBtn').addEventListener('click', ()=>{
-  const n = Number(document.getElementById('jump').value);
-  if(!n){ alert('Enter a chapter number'); return; }
-  location.href = `chapters/reader.html?n=${n}`;
+/* jump */
+document.getElementById('jumpBtn').addEventListener('click',()=>{
+  const n=Number(document.getElementById('jump').value);
+  if(!n) return alert('Enter chapter number');
+  location.href=`chapters/reader.html?n=${n}`;
 });
-document.getElementById('searchBtn').addEventListener('click', ()=>{
-  const q = document.getElementById('search').value.trim();
-  if(!q) return;
-  const num = Number(q);
-  if(num){ location.href = `chapters/reader.html?n=${num}`; return; }
-  const found = Array.from(document.querySelectorAll('.link')).find(a => a.textContent.toLowerCase().includes(q.toLowerCase()));
-  if(found) location.href = found.href; else alert('No match found. Try a chapter number or "Ch N".');
-});
-
-/* simple prefetch */
-const prefetchSet = new Set();
-function prefetch(url){
-  if(prefetchSet.has(url)) return;
-  prefetchSet.add(url);
-  const l = document.createElement('link'); l.rel='prefetch'; l.href = url; document.head.appendChild(l);
-}
 </script>
 </body>
 </html>
