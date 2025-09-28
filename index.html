@@ -2,108 +2,244 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Vasava Translations</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vasava Translations — Chapters 490–586</title>
 <style>
   :root{
-    --bg:#000; --panel:#111; --text:#fff; --muted:#9aaeb0;
-    --accent:#28c76f; --radius:10px;
+    --bg:#eef2f7;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --text:#0f172a;
+    --accent:#276ef1;
+    --accent-2:#6c63ff;
+    --glass: rgba(255,255,255,0.6);
+    --toggle-w: 56px;
+    --toggle-h: 32px;
   }
-  [data-theme="light"]{
-    --bg:#fff; --panel:#f9f9f9; --text:#000; --muted:#555;
-    --accent:#28c76f;
+  [data-theme="dark"]{
+    --bg:linear-gradient(180deg,#07070a 0%, #0b0b0f 100%);
+    --card:#0f1720;
+    --muted:#9aa3b2;
+    --text:#e6eef8;
+    --accent:#4b86ff;
+    --accent-2:#8b7bff;
+    --glass: rgba(255,255,255,0.03);
   }
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-  .wrap{max-width:800px;margin:34px auto;padding:22px}
-  .card{background:var(--panel);border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,0.05)}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  h1{margin:0;font-size:1.3rem;letter-spacing:0.6px}
-  .controls{display:flex;gap:8px;align-items:center}
-  .btn{background:transparent;border:1px solid var(--muted);padding:6px 10px;border-radius:6px;color:var(--text);cursor:pointer;font-size:0.9rem}
-  .hero{margin-top:14px;padding:14px;border-radius:8px;background:rgba(40,199,111,0.08)}
-  .note{color:var(--muted);margin-top:6px;font-size:0.95rem}
-  .collections{margin-top:16px}
-  .collection{border:1px solid rgba(255,255,255,0.08);border-radius:8px}
-  .coll-head{padding:8px 10px;cursor:pointer;font-weight:600;background:transparent;color:var(--accent);font-size:0.95rem}
-  .coll-list{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s, opacity .2s;padding:0 8px}
-  .coll-list.open{max-height:500px;opacity:1;padding:8px}
-  a.link{display:block;padding:6px;border-radius:6px;text-decoration:none;text-align:center;border:1px solid rgba(255,255,255,0.08);color:var(--text);font-size:0.9rem}
-  a.link:hover{border-color:var(--accent)}
-  .actions{margin-top:14px}
-  input[type=number]{background:transparent;border:1px solid var(--muted);padding:6px 8px;border-radius:6px;color:var(--text);width:120px}
+
+  html,body{height:100%;margin:0}
+  body{
+    font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;
+    min-height:100vh;margin:0;background:var(--bg);
+    display:flex;align-items:flex-start;justify-content:center;padding:36px;color:var(--text);
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  }
+
+  .box{
+    width:100%;max-width:920px;background:linear-gradient(180deg, var(--card), var(--glass));
+    padding:26px;border-radius:14px;box-shadow:0 10px 30px rgba(18,30,60,0.12);
+    border:1px solid rgba(0,0,0,0.04);
+    backdrop-filter: blur(6px);
+  }
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:56px;height:56px;display:inline-grid;place-items:center;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 6px 18px rgba(43,57,90,0.12);
+    flex:0 0 56px;
+  }
+  .logo svg{width:36px;height:36px;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.08));}
+  h1{margin:0;font-size:1.125rem;letter-spacing:0.2px}
+  .sub{color:var(--muted);font-size:0.9rem;margin-top:2px}
+
+  .controls{display:flex;gap:10px;align-items:center}
+  .ofpv-btn{
+    background:transparent;border:1px solid rgba(15,23,42,0.08);padding:9px 14px;border-radius:10px;cursor:pointer;
+    font-weight:600;color:var(--text);display:inline-flex;gap:10px;align-items:center;
+    background:linear-gradient(90deg, rgba(39,110,241,0.08), rgba(108,99,255,0.05));
+  }
+  .ofpv-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(41,60,120,0.06)}
+
+  /* Theme toggle: pill with animated orb */
+  .theme-toggle {
+    width: var(--toggle-w);
+    height: var(--toggle-h);
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+    display:inline-flex;align-items:center;padding:4px;gap:6px;border:1px solid rgba(15,23,42,0.06);
+    position:relative;cursor:pointer;
+    transition: all 220ms ease;
+  }
+  .theme-toggle[data-mode="dark"]{
+    background: linear-gradient(90deg, rgba(102,102,255,0.18), rgba(39,110,241,0.12));
+    box-shadow: 0 6px 18px rgba(67,88,170,0.12), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+  .theme-orb{
+    width: calc(var(--toggle-h) - 8px);
+    height: calc(var(--toggle-h) - 8px);
+    border-radius:50%;
+    background: #fff;
+    display:inline-grid;place-items:center;
+    transform: translateX(0);
+    transition: transform 280ms cubic-bezier(.2,.9,.3,1), background 220ms ease;
+    box-shadow: 0 6px 14px rgba(12,18,30,0.12);
+  }
+  .theme-toggle[data-mode="dark"] .theme-orb{
+    transform: translateX(calc(var(--toggle-w) - var(--toggle-h)));
+    background: linear-gradient(180deg,#ffd86b,#ffb86b);
+    box-shadow: 0 8px 26px rgba(140,110,80,0.18);
+  }
+  .theme-icon{
+    width:16px;height:16px;display:block;opacity:1;transition:opacity 200ms ease;
+  }
+  .theme-toggle[data-mode="dark"] .icon-sun{opacity:0}
+  .theme-toggle[data-mode="dark"] .icon-moon{opacity:1}
+  .icon-sun{opacity:1}
+  .icon-moon{opacity:0}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:12px}
+  .item{background:transparent;padding:10px;border-radius:8px;text-align:center;text-decoration:none;
+        color:var(--text);display:block;border:1px solid rgba(15,23,42,0.04);font-weight:600}
+  .item:hover,.item:focus{background:linear-gradient(180deg, rgba(39,110,241,0.03), rgba(108,99,255,0.02));
+                         transform:translateY(-4px);box-shadow:0 8px 20px rgba(41,60,120,0.06)}
+
+  /* note */
+  .note{margin-top:18px;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(39,110,241,0.03),transparent);color:var(--muted);font-size:0.95rem;border:1px solid rgba(39,110,241,0.06)}
+  .note a{color:var(--accent);text-decoration:none;font-weight:600}
+  .note small{display:block;margin-top:6px;color:var(--muted);font-size:0.85rem}
+
+  .skip-link{position:absolute;left:10px;top:10px;background:#fff;padding:8px;border-radius:6px;transform:translateY(-140%);transition:transform .18s ease;font-size:0.95rem}
+  .skip-link:focus{transform:none}
+  @media (max-width:520px){ .brand h1{font-size:1rem} .logo{width:48px;height:48px} .box{padding:18px} }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="card" aria-labelledby="site-title">
-      <header>
-        <h1 id="site-title">Vasava Translations</h1>
-        <div class="controls">
-          <button id="themeToggle" class="btn" aria-pressed="false">Toggle</button>
+  <a class="skip-link" href="#chapters">Skip to chapters</a>
+
+  <div class="box" id="page" role="region" aria-label="Vasava translations">
+    <header>
+      <div class="brand" aria-hidden="false">
+        <div class="logo" aria-hidden="true">
+          <!-- cat logo -->
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="32" cy="32" r="30" fill="white" opacity="0.06"/>
+            <path d="M18 30c0-6 6-12 14-12s14 6 14 12c0 8-6 18-14 18S18 38 18 30z" fill="#fff" opacity="0.06"/>
+            <path d="M32 10c-2 0-5 2-6 4-1-1-3-2-5-1-2 1-3 4-3 7 0 1 0 2 .5 3C19 25 24 30 32 30s13-5 14.5-7c.5-1 .5-2 .5-3 0-3-1-6-3-7-2-1-4 0-5 1-1-2-4-4-6-4z" fill="white" opacity="0.08"/>
+            <path d="M24 34c0 0 2 6 8 6s8-6 8-6" stroke="#fff" stroke-opacity="0.12" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M26.5 28a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zM37.5 28a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z" fill="#fff" opacity="0.9"/>
+          </svg>
         </div>
-      </header>
-
-      <div class="hero">
-        <strong style="color:var(--accent)">All chapters are free. Repo is public.</strong>
-        <div class="note">I update chapters as I read them. If you value the work consider donating. Thank you.</div>
+        <div>
+          <h1>Vasava</h1>
+          <div class="sub">Translations · reader index</div>
+        </div>
       </div>
 
-      <div class="collections" id="collections"></div>
+      <div class="controls" role="group" aria-label="Header controls">
+        <button id="ofpvBtn" class="ofpv-btn" aria-controls="chapters" aria-expanded="false" title="Toggle chapters list">
+          ofpv chapters 490–586
+        </button>
 
-      <div class="actions">
-        <input id="jump" type="number" min="1" placeholder="Chapter #">
-        <button id="jumpBtn" class="btn">Open</button>
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme" data-mode="light" title="Toggle dark / light theme">
+          <span class="theme-orb" aria-hidden="true">
+            <svg class="theme-icon icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" stroke="#f6c358" stroke-width="1.6" fill="#ffd86b"/>
+              <g stroke="#f6c358" stroke-width="1.4" stroke-linecap="round">
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+              </g>
+            </svg>
+            <svg class="theme-icon icon-moon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" fill="#0f172a"/>
+            </svg>
+          </span>
+        </button>
       </div>
-    </section>
+    </header>
+
+    <nav id="chapters" aria-label="Chapters" hidden>
+      <div class="grid" id="list" role="list" aria-live="polite"></div>
+    </nav>
+
+    <div class="note" role="note" aria-live="polite">
+      r/ofpv
+      <small><a href="#" id="repoLink">View repository</a> · <a href="#" id="donateLink">Donate</a></small>
+    </div>
   </div>
 
 <script>
-/* collection config */
-const collections = [
-  { id:'ofpv', title:'OFPV', from:490, to:586 }
-];
+  const root = document.documentElement;
+  const storageKey = 'vasava-theme';
+  const stored = localStorage.getItem(storageKey);
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = stored ? stored : (prefersDark ? 'dark' : 'light');
 
-/* render */
-const container = document.getElementById('collections');
-collections.forEach(col=>{
-  const block=document.createElement('div');
-  block.className='collection';
-  block.innerHTML=`<div class="coll-head">${col.title}</div><div class="coll-list" id="list-${col.id}" aria-hidden="true"></div>`;
-  container.appendChild(block);
-
-  const list=block.querySelector('.coll-list');
-  for(let i=col.from;i<=col.to;i++){
-    const a=document.createElement('a');
-    a.className='link'; a.href=`chapters/reader.html?n=${i}`; a.textContent=`Ch ${i}`;
-    list.appendChild(a);
+  // apply theme
+  function applyTheme(mode){
+    if(mode === 'dark') root.setAttribute('data-theme','dark'); else root.removeAttribute('data-theme');
+    localStorage.setItem(storageKey, mode);
+    themeToggle.setAttribute('aria-pressed', String(mode === 'dark'));
+    themeToggle.setAttribute('data-mode', mode === 'dark' ? 'dark' : 'light');
+    // text label not present by design. keep aria.
   }
 
-  block.querySelector('.coll-head').addEventListener('click',()=>{
-    list.classList.toggle('open');
-    list.setAttribute('aria-hidden', !list.classList.contains('open'));
+  // create chapters without the extra number-span element (just text)
+  (function createChapters(){
+    const start = 490, end = 586;
+    const list = document.getElementById('list');
+    const frag = document.createDocumentFragment();
+    for(let i=start;i<=end;i++){
+      const a = document.createElement('a');
+      a.className = 'item';
+      a.href = `chapters/reader.html?n=${i}`;
+      a.textContent = `Chapter ${i}`; // simplified, no extra wrapper
+      a.setAttribute('role','listitem');
+      a.setAttribute('tabindex','-1'); // hidden until revealed
+      frag.appendChild(a);
+    }
+    list.appendChild(frag);
+  })();
+
+  // ofpv toggle
+  const ofpvBtn = document.getElementById('ofpvBtn');
+  const chapters = document.getElementById('chapters');
+  function setItemsTabIndex(val){
+    document.querySelectorAll('#list .item').forEach(el=> el.setAttribute('tabindex', String(val)));
+  }
+  ofpvBtn.addEventListener('click', ()=>{
+    const hidden = chapters.hasAttribute('hidden');
+    if(hidden){
+      chapters.removeAttribute('hidden');
+      ofpvBtn.setAttribute('aria-expanded','true');
+      ofpvBtn.textContent = 'Hide chapters 490–586';
+      setItemsTabIndex(0);
+      const first = document.querySelector('#list .item');
+      if(first) first.focus();
+    } else {
+      chapters.setAttribute('hidden','');
+      ofpvBtn.setAttribute('aria-expanded','false');
+      ofpvBtn.textContent = 'ofpv chapters 490–586';
+      setItemsTabIndex(-1);
+      ofpvBtn.focus();
+    }
   });
-});
 
-/* theme toggle */
-const root=document.documentElement;
-const stored=localStorage.getItem('vasava-theme');
-root.setAttribute('data-theme', stored || 'dark');
-const btn=document.getElementById('themeToggle');
-function updateBtn(){ btn.textContent = root.getAttribute('data-theme')==='light'?'Dark':'Light'; }
-btn.addEventListener('click',()=>{
-  const next=root.getAttribute('data-theme')==='light'?'dark':'light';
-  root.setAttribute('data-theme',next);
-  localStorage.setItem('vasava-theme',next);
-  updateBtn();
-});
-updateBtn();
+  // theme toggle interactive
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', ()=>{
+    const nowDark = root.getAttribute('data-theme') === 'dark';
+    applyTheme(nowDark ? 'light' : 'dark');
+  });
+  // initialize
+  applyTheme(initial);
 
-/* jump */
-document.getElementById('jumpBtn').addEventListener('click',()=>{
-  const n=Number(document.getElementById('jump').value);
-  if(!n) return alert('Enter chapter number');
-  location.href=`chapters/reader.html?n=${n}`;
-});
+  // focus styles for keyboard users
+  document.addEventListener('keydown', e=> { if(e.key === 'Tab') document.body.classList.add('user-tabbing') });
+  document.addEventListener('mousedown', ()=> document.body.classList.remove('user-tabbing'));
+  document.addEventListener('focusin', e=>{
+    if(document.body.classList.contains('user-tabbing')) e.target.style.outline = '3px solid rgba(39,110,241,0.12)';
+  });
+  document.addEventListener('focusout', e=> e.target.style.outline = '');
 </script>
 </body>
 </html>
