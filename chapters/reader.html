@@ -5,20 +5,20 @@
 <title>Chapter reader</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  :root{--bg:#000;--text:#eee;--muted:#aaa}
+  :root{--bg:#000;--text:#eee;--muted:#aaa;--card-bg:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+  [data-theme="light"]{--bg:#fff;--text:#111;--muted:#666;--card-bg:linear-gradient(180deg,#fff,#fbfbfb)}
   html,body{height:100%;margin:0}
-  body{background:var(--bg);color:var(--text);font-family:system-ui,Arial;padding:28px;
-       display:flex;justify-content:center}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,Arial;padding:28px;display:flex;justify-content:center}
   .wrap{max-width:760px;width:100%}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-        padding:20px;border-radius:10px}
+  .card{background:var(--card-bg);padding:20px;border-radius:10px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px}
   h1{margin:0 0 8px;font-size:1.2rem}
   .meta{color:var(--muted);font-size:0.9rem;margin-bottom:14px}
   #content{line-height:1.7;color:var(--text);white-space:normal}
   nav{display:flex;justify-content:space-between;margin-top:20px}
-  a{color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.06);
-    padding:8px 12px;border-radius:8px}
+  a{color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px}
   a[disabled]{opacity:.35;pointer-events:none}
+  .toggle{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--text)}
   p{margin:0 0 1em}
 </style>
 </head>
@@ -26,15 +26,21 @@
   <div class="wrap">
     <div class="card">
       <header>
-        <h1 id="title">Loading…</h1>
-        <div class="meta" id="meta">Vasava TLS</div>
+        <div>
+          <h1 id="title">Loading…</h1>
+          <div class="meta" id="meta">Translator · Published</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a href="/" style="text-decoration:none;color:var(--text);font-size:0.9rem;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px">Home</a>
+          <button id="themeToggle" class="toggle" aria-label="Toggle theme">Toggle</button>
+        </div>
       </header>
 
       <section id="content">Loading text…</section>
 
       <nav id="nav">
         <a id="prev" href="#">← Prev</a>
-        <a href="/" id="home">Home</a>
+        <span></span>
         <a id="next" href="#">Next →</a>
       </nav>
     </div>
@@ -42,6 +48,21 @@
 
 <script>
 (function(){
+  // Theme initialization and toggle (shared behavior with index)
+  const root = document.documentElement;
+  const stored = localStorage.getItem('vasava-theme');
+  if(stored) root.setAttribute('data-theme', stored);
+  function setTheme(t){ root.setAttribute('data-theme', t); localStorage.setItem('vasava-theme', t); }
+  const btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', ()=>{
+    const cur = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+  function updateBtn(){ btn.textContent = (root.getAttribute('data-theme') === 'dark') ? 'Light' : 'Dark'; }
+  new MutationObserver(updateBtn).observe(root, {attributes:true, attributeFilter:['data-theme']});
+  updateBtn();
+
+  // Reader logic
   const params = new URLSearchParams(location.search);
   let n = parseInt(params.get('n'),10) || 490;
   const first = 490, last = 710;
