@@ -6,90 +6,207 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
   :root{
-    --bg:#f0f0f0; --card:#fff; --text:#111; --muted:#666; --item:#fafafa; --item-hover:#f0f0f0;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --accent: #7c3aed;
+    --item: #fbfdff;
+    --item-hover: #f0f5ff;
+    --glass: rgba(255,255,255,0.6);
   }
   [data-theme="dark"]{
-    --bg:#0b0b0b; --card:#0f0f0f; --text:#eee; --muted:#9a9a9a; --item:#111; --item-hover:#222;
+    --bg: #0b0b0f;
+    --card: linear-gradient(180deg,#0f1114,#0b0b0d);
+    --text: #e6eef8;
+    --muted: #9aa4b2;
+    --accent: #8b5cf6;
+    --item: #0f1216;
+    --item-hover: #14161a;
+    --glass: rgba(255,255,255,0.03);
   }
+
   html,body{height:100%;margin:0}
   body{
-    font-family:system-ui,Arial;min-height:100vh;margin:0;background:var(--bg);
-    display:flex;align-items:flex-start;justify-content:center;padding:36px;color:var(--text)
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:36px;
   }
-  .box{background:var(--card);padding:26px;border-radius:10px;max-width:920px;width:100%;
-       box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
-  h1{margin:0 0 6px;font-size:1.25rem}
-  .muted{color:var(--muted);font-size:0.92rem}
+
+  .box{
+    width:100%;
+    max-width:980px;
+    background:var(--card);
+    border-radius:12px;
+    padding:26px;
+    box-shadow:0 10px 30px rgba(15,23,42,0.06);
+    overflow:hidden;
+  }
+
+  header{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:center;
+  }
+
+  .brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .logo{
+    width:48px;height:48px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),#4c1d95);
+    display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;
+    box-shadow:0 6px 16px rgba(124,58,237,0.12);
+  }
+  h1{margin:0;font-size:1.2rem}
+  .subtitle{margin-top:4px;color:var(--muted);font-size:0.95rem}
+
+  .controls{display:flex;gap:10px;align-items:center}
   .toggle{
-    background:transparent;border:1px solid rgba(0,0,0,0.08);padding:8px 10px;border-radius:8px;
+    background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px 10px;border-radius:8px;
     cursor:pointer;color:var(--text);
   }
-  .ofpv-btn{
-    display:inline-block;padding:10px 14px;border-radius:8px;background:#f7f7f7;border:1px solid #e6e6e6;
-    cursor:pointer;text-decoration:none;color:var(--text);font-weight:600;text-align:center;width:100%;
+
+  .hero{
+    margin-top:18px;padding:16px;border-radius:10px;background:linear-gradient(180deg, rgba(124,58,237,0.04), rgba(124,58,237,0.01));
+    display:flex;justify-content:space-between;gap:12px;align-items:center;
   }
-  .ofpv-list{margin-top:10px;display:none;grid-column:1/-1;padding:8px;border-radius:8px;background:linear-gradient(180deg,#fff,#fbfbfb)}
-  .item{background:var(--item);padding:8px;border-radius:6px;text-align:center;text-decoration:none;
-        color:var(--text);display:block;border:1px solid rgba(0,0,0,0.04)}
-  .item:hover{background:var(--item-hover)}
-  .note{margin-top:12px;padding:10px;border-radius:8px;background:linear-gradient(180deg,#fff,#fafafa);font-size:0.95rem}
-  .small{font-size:0.88rem;color:var(--muted)}
+  .hero-left{max-width:66%}
+  .hero h2{margin:0 0 6px 0;font-size:1.05rem}
+  .hero p{margin:0;color:var(--muted)}
+
+  .content{display:grid;grid-template-columns:1fr 260px;gap:18px;margin-top:18px}
+  .card{background:var(--item);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.03)}
+  .note{padding:12px;border-radius:8px;background:var(--item);color:var(--muted);font-size:0.95rem}
+
+  .ofpv-btn{
+    display:block;padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfbff);
+    border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:600;color:var(--text);text-align:center;
+  }
+
+  .ofpv-list{
+    margin-top:10px;max-height:0;overflow:hidden;border-radius:8px;transition: max-height .32s ease, padding .2s;
+    background:var(--item);
+  }
+  .ofpv-list.open{padding:10px;max-height:520px}
+
+  .grid-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+  .item{
+    background:transparent;padding:8px;border-radius:8px;text-align:center;text-decoration:none;color:var(--text);
+    border:1px solid rgba(0,0,0,0.04);
+  }
+  .item:hover{background:var(--item-hover);transform:translateY(-2px);transition:transform .12s ease}
+
+  aside{padding:12px;border-radius:10px;background:var(--item);height:fit-content}
+  .jump{display:flex;gap:8px;margin-top:8px}
+  input[type=number]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+  .cta{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--accent);color:white;text-decoration:none}
+
+  footer{margin-top:18px;color:var(--muted);font-size:0.9rem;text-align:center}
 </style>
 </head>
 <body>
-  <div class="box" id="page" data-theme="">
+  <div class="box">
     <header>
-      <div>
-        <h1>Vasava Translations</h1>
-        <div class="muted">Fan translations — chapters 490–586</div>
+      <div class="brand">
+        <div class="logo">VT</div>
+        <div>
+          <h1>Vasava Translations</h1>
+          <div class="subtitle">Community-run • Free • Chapters 490–586</div>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center">
+
+      <div class="controls">
         <button id="themeToggle" class="toggle" aria-label="Toggle theme">Dark</button>
       </div>
     </header>
 
-    <div class="note">
-      <strong>Everything here is free.</strong> This site is community-run and the repo is public.  
-      If you want to help translate, DM <strong>jaide.e</strong> on Discord.
-    </div>
-
-    <div style="margin-top:14px">
-      <button id="ofpvToggle" class="ofpv-btn">OFPV — Chapters 490–586</button>
-      <div id="ofpvList" class="ofpv-list">
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px"></div>
+    <div class="hero" role="region" aria-label="intro">
+      <div class="hero-left">
+        <h2>All chapters free. No paywall. Community-run.</h2>
+        <p>Read translated chapters, help out, or donate. If you want to help translate DM <strong>jaide.e</strong> on Discord.</p>
+      </div>
+      <div style="text-align:right">
+        <a class="cta" href="https://ko-fi.com/vasavatls" target="_blank" rel="noopener">Support on Ko-fi</a>
       </div>
     </div>
+
+    <div class="content">
+      <div>
+        <div class="card">
+          <button id="ofpvToggle" class="ofpv-btn" title="Show chapters 490–586">OFPV — Chapters 490–586</button>
+
+          <div id="ofpvList" class="ofpv-list" aria-hidden="true">
+            <div class="grid-links" id="ofpvLinks"></div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          <strong>How to add chapters</strong><br>
+          Paste plain text into <code>chapters/chNN.txt</code>. Use an empty line between paragraphs. Reader auto-formats.
+        </div>
+      </div>
+
+      <aside>
+        <div style="font-weight:600">Quick jump</div>
+        <div class="jump">
+          <input id="jump" type="number" min="490" max="586" placeholder="490">
+          <button id="jumpBtn" class="ofpv-btn" style="padding:8px 10px">Open</button>
+        </div>
+        <div style="margin-top:10px;color:var(--muted);font-size:0.9rem">
+          Double-click the OFPV button to open Chapter 490.
+        </div>
+      </aside>
+    </div>
+
+    <footer>Everything here is free and the repo is public. Community translations. DM <strong>jaide.e</strong> on Discord to help.</footer>
   </div>
 
 <script>
-  // Theme
-  const page = document.getElementById('page');
-  const btn = document.getElementById('themeToggle');
+  // theme: apply on documentElement (fixes missing text)
+  const root = document.documentElement;
   const stored = localStorage.getItem('vasava-theme');
-  if(stored) page.setAttribute('data-theme', stored);
-  else page.setAttribute('data-theme','light');
-  function setTheme(t){ page.setAttribute('data-theme',t); localStorage.setItem('vasava-theme',t); updateBtn(); }
-  function updateBtn(){ btn.textContent = (page.getAttribute('data-theme')==='dark')?'Light':'Dark'; }
-  btn.addEventListener('click',()=>setTheme(page.getAttribute('data-theme')==='dark'?'light':'dark'));
+  const btn = document.getElementById('themeToggle');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(stored) root.setAttribute('data-theme', stored);
+  else root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  function setTheme(t){ root.setAttribute('data-theme', t); localStorage.setItem('vasava-theme', t); updateBtn();}
+  function updateBtn(){ btn.textContent = (root.getAttribute('data-theme') === 'dark') ? 'Light' : 'Dark'; }
+  btn.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
   updateBtn();
 
-  // Build OFPV list (490-586)
-  const ofpvWrap = document.querySelector('#ofpvList > div');
+  // build OFPV links 490-586
+  const links = document.getElementById('ofpvLinks');
   for(let i=490;i<=586;i++){
-    const a=document.createElement('a');
-    a.className='item';
-    a.href=`chapters/reader.html?n=${i}`;
-    a.textContent=`Ch ${i}`;
-    ofpvWrap.appendChild(a);
+    const a = document.createElement('a');
+    a.className = 'item';
+    a.href = `chapters/reader.html?n=${i}`;
+    a.textContent = `Ch ${i}`;
+    links.appendChild(a);
   }
 
-  // Toggle
-  const ofpvToggle=document.getElementById('ofpvToggle');
-  const ofpvList=document.getElementById('ofpvList');
-  ofpvToggle.addEventListener('click',()=>{
-    ofpvList.style.display=ofpvList.style.display==='block'?'none':'block';
-    if(ofpvList.style.display==='block') ofpvList.scrollIntoView({behavior:'smooth',block:'center'});
+  // toggle behaviour
+  const ofpvToggle = document.getElementById('ofpvToggle');
+  const ofpvList = document.getElementById('ofpvList');
+  ofpvToggle.addEventListener('click', ()=>{
+    const open = ofpvList.classList.toggle('open');
+    ofpvList.setAttribute('aria-hidden', !open);
+    if(open) ofpvList.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  ofpvToggle.addEventListener('dblclick', ()=> location.href = 'chapters/reader.html?n=490');
+
+  // jump control
+  document.getElementById('jumpBtn').addEventListener('click', ()=>{
+    const n = Number(document.getElementById('jump').value) || 490;
+    if(n < 490 || n > 586){ alert('Enter chapter between 490 and 586'); return; }
+    location.href = `chapters/reader.html?n=${n}`;
   });
 </script>
 </body>
