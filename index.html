@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Vasava Translations</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Vasava Translations — Chapters 490–586. Lightweight reader index with dark/light theme toggle and keyboard accessibility." />
+<title>Vasava Translations — Chapters 490–586</title>
 <style>
   :root{
     --bg:#f0f0f0; --card:#fff; --text:#111; --muted:#666; --item:#fafafa; --item-hover:#f0f0f0;
+    --accent:#0066cc;
   }
   [data-theme="dark"]{
     --bg:#0b0b0b; --card:#0f0f0f; --text:#eee; --muted:#9a9a9a; --item:#111; --item-hover:#222;
@@ -14,7 +16,8 @@
 
   html,body{height:100%;margin:0}
   body{
-    font-family:system-ui,Arial;min-height:100vh;margin:0;background:var(--bg);
+    font-family:system-ui,Arial,Helvetica,sans-serif;
+    min-height:100vh;margin:0;background:var(--bg);
     display:flex;align-items:flex-start;justify-content:center;padding:36px;color:var(--text)
   }
   .box{background:var(--card);padding:28px;border-radius:10px;max-width:800px;width:100%;
@@ -22,58 +25,121 @@
   header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
   h1{margin:0 0 6px;text-align:left;font-size:1.25rem}
   .muted{color:var(--muted);font-size:0.9rem}
+  .controls{display:flex;gap:8px;align-items:center}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:10px}
   .item{background:var(--item);padding:8px;border-radius:6px;text-align:center;text-decoration:none;
-        color:var(--text);display:block;border:1px solid rgba(0,0,0,0.04)}
-  .item:hover{background:var(--item-hover)}
+        color:var(--text);display:block;border:1px solid rgba(0,0,0,0.04);outline: none}
+  .item:hover,.item:focus{background:var(--item-hover);box-shadow:0 0 0 3px rgba(0,102,204,0.08)}
   .toggle{
     background:transparent;border:1px solid rgba(0,0,0,0.08);padding:8px 10px;border-radius:8px;
     cursor:pointer;color:var(--text);
   }
+  .ofpv-btn{
+    background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;
+  }
+  .ofpv-btn[aria-expanded="true"]{opacity:0.95}
+  :focus{outline:none}
+  .focus-ring{box-shadow:0 0 0 3px rgba(0,102,204,0.18);border-radius:6px}
+  .skip-link{position:absolute;left:8px;top:8px;background:#fff;padding:8px;border-radius:6px;transform:translateY(-120%);transition:transform .18s ease;font-size:0.95rem}
+  .skip-link:focus{transform:none}
+  @media (max-width:420px){ body{padding:18px} .box{padding:18px} .grid{gap:8px} }
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#chapters">Skip to chapters</a>
+
   <div class="box" id="page">
     <header>
       <div>
         <h1>Vasava Translations</h1>
         <div class="muted">Chapters 490–586</div>
       </div>
-      <button id="themeToggle" class="toggle" aria-label="Toggle theme">Toggle</button>
+
+      <div class="controls" role="group" aria-label="Controls">
+        <button id="ofpvBtn" class="ofpv-btn" aria-controls="chapters" aria-expanded="false">ofpv</button>
+        <button id="themeToggle" class="toggle" aria-pressed="false" aria-label="Toggle color theme">Toggle</button>
+      </div>
     </header>
 
-    <div class="grid" id="list"></div>
+    <nav id="chapters" aria-label="Chapters" hidden>
+      <div class="grid" id="list" role="list" aria-live="polite"></div>
+    </nav>
   </div>
 
 <script>
-  // Theme init
+  /* Theme: prefer saved, then system preference, then light */
   const root = document.documentElement;
-  const stored = localStorage.getItem('vasava-theme');
-  if(stored) root.setAttribute('data-theme', stored);
-  function setTheme(t){
-    root.setAttribute('data-theme', t);
-    localStorage.setItem('vasava-theme', t);
-  }
-  const btn = document.getElementById('themeToggle');
-  btn.addEventListener('click', ()=>{
-    const cur = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    setTheme(cur === 'dark' ? 'light' : 'dark');
-  });
-  // Set initial button label
-  function updateBtn(){ btn.textContent = (root.getAttribute('data-theme') === 'dark') ? 'Light' : 'Dark'; }
-  new MutationObserver(updateBtn).observe(root, {attributes:true, attributeFilter:['data-theme']});
-  updateBtn();
+  const storageKey = 'vasava-theme';
+  const stored = localStorage.getItem(storageKey);
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = stored ? stored : (prefersDark ? 'dark' : 'light');
 
-  // Chapters list
-  const start = 490, end = 586;
-  const list = document.getElementById('list');
-  for(let i=start;i<=end;i++){
-    const a = document.createElement('a');
-    a.className='item';
-    a.href = `chapters/reader.html?n=${i}`;
-    a.textContent = `Chapter ${i}`;
-    list.appendChild(a);
+  function applyTheme(t){
+    root.setAttribute('data-theme', t);
+    localStorage.setItem(storageKey, t);
+    const pressed = (t === 'dark');
+    themeBtn.setAttribute('aria-pressed', String(pressed));
+    themeBtn.textContent = pressed ? 'Light' : 'Dark';
   }
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', ()=> applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
+  applyTheme(initialTheme);
+
+  /* Create chapter items (kept separate so they are created but hidden until revealed) */
+  (function createChapters(){
+    const start = 490, end = 586;
+    const list = document.getElementById('list');
+    const frag = document.createDocumentFragment();
+    for(let i=start;i<=end;i++){
+      const a = document.createElement('a');
+      a.className = 'item';
+      a.href = `chapters/reader.html?n=${i}`;
+      a.textContent = `Chapter ${i}`;
+      a.setAttribute('role', 'listitem');
+      a.setAttribute('tabindex', '-1'); // remove from tab order while hidden
+      frag.appendChild(a);
+    }
+    list.appendChild(frag);
+  })();
+
+  /* ofpv button reveals the chapters. It toggles visibility and tab index for accessibility. */
+  const ofpvBtn = document.getElementById('ofpvBtn');
+  const chapters = document.getElementById('chapters');
+  const chapterItems = () => Array.from(document.querySelectorAll('#list .item'));
+
+  ofpvBtn.addEventListener('click', ()=>{
+    const nowHidden = chapters.hasAttribute('hidden');
+    if(nowHidden){
+      // reveal
+      chapters.removeAttribute('hidden');
+      ofpvBtn.setAttribute('aria-expanded', 'true');
+      ofpvBtn.textContent = 'Hide chapters';
+      // make items focusable
+      chapterItems().forEach((el)=> el.setAttribute('tabindex','0'));
+      // move focus to first chapter for keyboard users
+      const first = chapterItems()[0];
+      if(first) first.focus();
+    } else {
+      // hide
+      chapters.setAttribute('hidden','');
+      ofpvBtn.setAttribute('aria-expanded', 'false');
+      ofpvBtn.textContent = 'ofpv';
+      // remove from tab order
+      chapterItems().forEach((el)=> el.setAttribute('tabindex','-1'));
+      // return focus to button
+      ofpvBtn.focus();
+    }
+  });
+
+  /* Keyboard-visible focus styles */
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Tab') document.body.classList.add('user-tabbing');
+  });
+  document.addEventListener('mousedown', ()=> document.body.classList.remove('user-tabbing'));
+  document.addEventListener('focusin', (e)=>{
+    if(document.body.classList.contains('user-tabbing')) e.target.classList && e.target.classList.add('focus-ring');
+  });
+  document.addEventListener('focusout', (e)=> e.target.classList && e.target.classList.remove('focus-ring'));
 </script>
 </body>
 </html>
