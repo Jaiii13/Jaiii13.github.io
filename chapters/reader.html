@@ -5,21 +5,40 @@
 <title>Chapter reader</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-  :root{--bg:#000;--text:#eee;--muted:#aaa}
-  html,body{height:100%;margin:0}
-  body{background:var(--bg);color:var(--text);font-family:system-ui,Arial;padding:28px;
-       display:flex;justify-content:center}
-  .wrap{max-width:760px;width:100%}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-        padding:20px;border-radius:10px}
-  h1{margin:0 0 8px;font-size:1.2rem}
-  .meta{color:var(--muted);font-size:0.9rem;margin-bottom:14px}
-  #content{line-height:1.7;color:var(--text);white-space:normal}
-  nav{display:flex;justify-content:space-between;margin-top:20px}
-  a{color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,0.06);
-    padding:8px 12px;border-radius:8px}
+  :root {
+    --bg:#000; --text:#eee; --muted:#aaa;
+  }
+  .light {
+    --bg:#fff; --text:#111; --muted:#555;
+  }
+  html,body {height:100%;margin:0}
+  body {
+    background:var(--bg);color:var(--text);
+    font-family:system-ui,Arial;
+    padding:28px;
+    display:flex;justify-content:center
+  }
+  .wrap {max-width:760px;width:100%}
+  .card {
+    background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+    padding:20px;border-radius:10px
+  }
+  h1 {margin:0 0 8px;font-size:1.2rem}
+  .meta {color:var(--muted);font-size:0.9rem;margin-bottom:14px}
+  #content {line-height:1.7;color:var(--text);white-space:normal}
+  nav {display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+  a {
+    color:var(--text);text-decoration:none;
+    border:1px solid rgba(255,255,255,0.06);
+    padding:8px 12px;border-radius:8px
+  }
+  .light a {border-color:rgba(0,0,0,0.15)}
   a[disabled]{opacity:.35;pointer-events:none}
-  p{margin:0 0 1em}
+  p{margin:0 0 1.2em}
+  button.toggle {
+    background:none;border:1px solid var(--muted);color:var(--text);
+    padding:8px 12px;border-radius:8px;cursor:pointer
+  }
 </style>
 </head>
 <body>
@@ -36,12 +55,31 @@
         <a id="prev" href="#">← Prev</a>
         <a href="/" id="home">Home</a>
         <a id="next" href="#">Next →</a>
+        <button id="modeToggle" class="toggle">🌙</button>
       </nav>
     </div>
   </div>
 
 <script>
 (function(){
+  // mode toggle
+  const body = document.body;
+  const toggleBtn = document.getElementById('modeToggle');
+  const saved = localStorage.getItem('theme');
+  if(saved === 'light') body.classList.add('light');
+
+  function updateIcon(){
+    toggleBtn.textContent = body.classList.contains('light') ? '☀️' : '🌙';
+  }
+  updateIcon();
+
+  toggleBtn.addEventListener('click',()=>{
+    body.classList.toggle('light');
+    localStorage.setItem('theme', body.classList.contains('light') ? 'light' : 'dark');
+    updateIcon();
+  });
+
+  // chapter navigation + text loading
   const params = new URLSearchParams(location.search);
   let n = parseInt(params.get('n'),10) || 490;
   const first = 490, last = 710;
@@ -59,12 +97,15 @@
     if(!r.ok) throw new Error('Not found');
     return r.text();
   }).then(t=>{
-    const paragraphs = t.trim().split(/\n{2,}/g).map(p=>{
+    t = t.replace(/\r/g,'').trim();
+    // split on blank lines => paragraphs
+    const paragraphs = t.split(/\n\s*\n+/).map(p=>{
       return '<p>' + p.replace(/\n/g,'<br>') + '</p>';
     }).join('');
     document.getElementById("content").innerHTML = paragraphs;
   }).catch(e=>{
-    document.getElementById("content").innerHTML = '<p style="color:#f88">Text file not found. Create '+txtFile+' and paste your chapter text into it.</p>';
+    document.getElementById("content").innerHTML = 
+      '<p style="color:#f88">Text file not found. Create '+txtFile+' and paste your chapter text into it.</p>';
   });
 })();
 </script>
